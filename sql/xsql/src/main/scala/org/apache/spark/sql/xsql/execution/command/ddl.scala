@@ -29,7 +29,6 @@ import org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils.getCommonJDBCTy
 import org.apache.spark.sql.jdbc.{JdbcDialect, JdbcDialects}
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.xsql.XSQLSessionCatalog
-import org.apache.spark.sql.xsql.manager.MysqlManager
 import org.apache.spark.sql.xsql.types._
 
 /**
@@ -274,7 +273,7 @@ case class XSQLAlterTableChangeColumnCommand(
     // Find the origin column from dataSchema by column name.
     val originColumn = findColumnByName(catalogTable.dataSchema, columnName, resolver)
     // Throw an AnalysisException if the column name/dataType is changed.
-    if (catalogTable.provider.get != MysqlManager.FULL_PROVIDER) {
+    if (catalogTable.provider.get != "jdbc") {
       if (!columnEqual(originColumn, newColumn, resolver)) {
         throw new AnalysisException(
           "ALTER TABLE CHANGE COLUMN is not supported for changing column " +
@@ -295,7 +294,7 @@ case class XSQLAlterTableChangeColumnCommand(
         field
       }
     }
-    if (catalogTable.provider.get == MysqlManager.FULL_PROVIDER) {
+    if (catalogTable.provider.get == "jdbc") {
       val dialect = JdbcDialects.get(catalogTable.storage.properties.get("url").get)
       val strSchema = schemaString(StructType(Seq(newColumn)), dialect)
       val sql = s"ALTER TABLE ${table.table} CHANGE $columnName $strSchema"
@@ -325,10 +324,10 @@ case class XSQLAlterTableChangeColumnCommand(
         }
       }
       sb.append(s", $name $typ $nullable ")
-      if (field.metadata.contains(MYSQL_COLUMN_DEFAULT)) {
-        sb.append(s"DEFAULT ${field.metadata.getString(MYSQL_COLUMN_DEFAULT)} ")
+      if (field.metadata.contains(JDBC_COLUMN_DEFAULT)) {
+        sb.append(s"DEFAULT ${field.metadata.getString(JDBC_COLUMN_DEFAULT)} ")
       }
-      if (field.metadata.contains(MYSQL_COLUMN_AUTOINC)) {
+      if (field.metadata.contains(JDBC_COLUMN_AUTOINC)) {
         sb.append(s"AUTO_INCREMENT ")
       }
       if (field.metadata.contains(PRIMARY_KEY)) {

@@ -1,0 +1,2 @@
+org.apache.spark.sql.execution.datasources.mysql.ExtendedDefaultSource
+org.apache.spark.sql.execution.datasources.oracle.ExtendedDefaultSource

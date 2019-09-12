@@ -1830,10 +1830,10 @@ class XSQLAstBuilder(conf: SQLConf) extends SqlBaseBaseVisitor[AnyRef] with Logg
     }
     if (DEFAULT != null) {
       val default = if (defaultString == null) "NULL" else string(defaultString)
-      builder.putString(MYSQL_COLUMN_DEFAULT, default)
+      builder.putString(JDBC_COLUMN_DEFAULT, default)
     }
     if (AUTO_INCREMENT != null) {
-      builder.putBoolean(MYSQL_COLUMN_AUTOINC, true)
+      builder.putBoolean(JDBC_COLUMN_DEFAULT, true)
     }
     if (PRIMARY != null) {
       builder.putBoolean(PRIMARY_KEY, true)

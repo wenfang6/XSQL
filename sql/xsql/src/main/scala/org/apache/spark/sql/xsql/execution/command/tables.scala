@@ -130,7 +130,7 @@ case class XSQLAlterTableAddColumnsCommand(table: TableIdentifier, colsToAdd: Se
  *   ADD COLUMN? (col_name data_type [COMMENT col_comment], ...);
  * }}}
  */
-case class XSQLAlterTableAddColumnsForMysqlCommand(
+case class XSQLAlterTableAddColumnsForJDBCCommand(
     table: TableIdentifier,
     colsToAdd: Seq[StructField])
   extends RunnableCommand {
@@ -153,7 +153,8 @@ case class XSQLAlterTableAddColumnsForMysqlCommand(
     DDLUtils.checkDataColNames(catalogTable, colsToAdd.map(_.name))
     val dialect = JdbcDialects.get(catalogTable.storage.properties.get("url").get)
     val strSchema = schemaString(StructType(colsToAdd), dialect)
-    val sql = s"ALTER TABLE ${table.table} ADD ($strSchema)"
+    val tableName = dialect.quoteIdentifier(table.table)
+    val sql = s"ALTER TABLE ${tableName} ADD ($strSchema)"
     catalog.alterTableDataSchema(table, StructType(catalogTable.dataSchema ++ colsToAdd), sql)
     Seq.empty[Row]
   }
@@ -177,10 +178,10 @@ case class XSQLAlterTableAddColumnsForMysqlCommand(
         }
       }
       sb.append(s", $name $typ $nullable ")
-      if (field.metadata.contains(MYSQL_COLUMN_DEFAULT)) {
-        sb.append(s"DEFAULT ${field.metadata.getString(MYSQL_COLUMN_DEFAULT)} ")
+      if (field.metadata.contains(JDBC_COLUMN_DEFAULT)) {
+        sb.append(s"DEFAULT ${field.metadata.getString(JDBC_COLUMN_DEFAULT)} ")
       }
-      if (field.metadata.contains(MYSQL_COLUMN_AUTOINC)) {
+      if (field.metadata.contains(JDBC_COLUMN_AUTOINC)) {
         sb.append("AUTO_INCREMENT ")
       }
       if (field.metadata.contains(PRIMARY_KEY)) {
@@ -228,7 +229,7 @@ case class XSQLAlterTableAddColumnsForMysqlCommand(
   }
 }
 
-case class XSQLAlterTableDropColumnsForMysqlCommand(
+case class XSQLAlterTableDropColumnsForJDBCCommand(
     table: TableIdentifier,
     colstoDrop: Seq[String])
   extends RunnableCommand {
@@ -257,20 +258,14 @@ case class XSQLAlterTableDropColumnsForMysqlCommand(
       }
     })
 
-    val newDataSchema: Array[StructField] = oldFields.filter(field => {
+    val newDataSchema = oldFields.filter(field => {
       !colstoDrop.contains(field.name)
     })
 
-    val colsToDrop = catalogTable.dataSchema.fields.filter(field => {
-      colstoDrop.contains(field.name)
-    })
-
-    val strField = StructType(colsToDrop).fields
-      .map(field => {
-        "DROP " + field.name
-      })
-      .mkString(",")
-    val sql = s"ALTER TABLE ${table.table} $strField"
+    val dialect = JdbcDialects.get(catalogTable.storage.properties.get("url").get)
+    val tableName = dialect.quoteIdentifier(table.table)
+    val strField = colstoDrop.map("DROP COLUMN " + dialect.quoteIdentifier(_)).mkString(",")
+    val sql = s"ALTER TABLE ${tableName} $strField"
 
     catalog.alterTableDataSchema(table, StructType(newDataSchema), sql)
 

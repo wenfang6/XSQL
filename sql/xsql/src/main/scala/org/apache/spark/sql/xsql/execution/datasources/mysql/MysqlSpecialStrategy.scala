@@ -31,10 +31,9 @@ import org.apache.spark.sql.execution.command.ExplainCommand
 import org.apache.spark.sql.execution.datasources.{CreateTable, LogicalRelation}
 import org.apache.spark.sql.execution.datasources.jdbc.JDBCRelation
 import org.apache.spark.sql.types._
-import org.apache.spark.sql.xsql.DataSourceManager.MAX_LIMIT
+import org.apache.spark.sql.xsql.DataSourceManager._
 import org.apache.spark.sql.xsql.XSQLSessionCatalog
 import org.apache.spark.sql.xsql.execution.command.PushDownQueryCommand
-import org.apache.spark.sql.xsql.manager.MysqlManager._
 
 class TransmitOriginalQuery(session: SparkSession) extends Rule[LogicalPlan] {
 

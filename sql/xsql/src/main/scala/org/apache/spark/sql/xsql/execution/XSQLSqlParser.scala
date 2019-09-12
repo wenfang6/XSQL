@@ -812,7 +812,7 @@ class XSQLSqlAstBuilder(conf: SQLConf) extends XSQLAstBuilder(conf) {
   }
 
   /**
-   * Create a [[XSQLAlterTableAddColumnsForMysqlCommand]] command.
+   * Create a [[XSQLAlterTableAddColumnsForJDBCCommand]] command.
    *
    * For example:
    * {{{
@@ -820,9 +820,9 @@ class XSQLSqlAstBuilder(conf: SQLConf) extends XSQLAstBuilder(conf) {
    *   ADD COLUMN? (col_name data_type [COMMENT col_comment], ...);
    * }}}
    */
-  override def visitAddTableColumnsForMysql(ctx: AddTableColumnsForMysqlContext): LogicalPlan =
+  override def visitAddTableColumnsForJDBC(ctx: AddTableColumnsForJDBCContext): LogicalPlan =
     withOrigin(ctx) {
-      XSQLAlterTableAddColumnsForMysqlCommand(
+      XSQLAlterTableAddColumnsForJDBCCommand(
         visitTableIdentifier(ctx.tableIdentifier),
         visitColTypeList(ctx.columns))
     }
@@ -854,9 +854,9 @@ class XSQLSqlAstBuilder(conf: SQLConf) extends XSQLAstBuilder(conf) {
       visitColType(ctx.colType))
   }
 
-  override def visitDropTableColumnsForMysql(ctx: DropTableColumnsForMysqlContext): LogicalPlan =
+  override def visitDropTableColumnsForJDBC(ctx: DropTableColumnsForJDBCContext): LogicalPlan =
     withOrigin(ctx) {
-      XSQLAlterTableDropColumnsForMysqlCommand(
+      XSQLAlterTableDropColumnsForJDBCCommand(
         visitTableIdentifier(ctx.tableIdentifier),
         ctx.identifier.asScala.map(_.getText))
     }

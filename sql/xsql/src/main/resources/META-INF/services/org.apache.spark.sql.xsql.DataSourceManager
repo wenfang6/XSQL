@@ -1,5 +1,4 @@
 org.apache.spark.sql.xsql.manager.HiveManager
-org.apache.spark.sql.xsql.manager.MysqlManager
 org.apache.spark.sql.xsql.manager.KafkaManager
 org.apache.spark.sql.xsql.manager.MongoManager
 org.apache.spark.sql.xsql.manager.RedisManager

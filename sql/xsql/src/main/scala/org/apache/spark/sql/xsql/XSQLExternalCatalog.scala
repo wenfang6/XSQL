@@ -310,7 +310,7 @@ private[xsql] class XSQLExternalCatalog(conf: SparkConf, hadoopConf: Configurati
     runtimeConf
       .getConfString(
         s"${SPARK_XSQL_DATASOURCE_PREFIX}${dsName}." +
-          s"${DataSourceManager.PUSHDOWN}.${MysqlManager.CONSIDER_TABLE_ROWS_TO_PUSHDOWN}",
+          s"${DataSourceManager.PUSHDOWN}.${DataSourceManager.CONSIDER_TABLE_ROWS_TO_PUSHDOWN}",
         DataSourceManager.TRUE)
       .toBoolean
   }
@@ -327,7 +327,7 @@ private[xsql] class XSQLExternalCatalog(conf: SparkConf, hadoopConf: Configurati
     runtimeConf
       .getConfString(
         s"${SPARK_XSQL_DATASOURCE_PREFIX}${dsName}." +
-          s"${DataSourceManager.PUSHDOWN}.${MysqlManager.CONSIDER_TABLE_INDEX_TO_PUSHDOWN}",
+          s"${DataSourceManager.PUSHDOWN}.${DataSourceManager.CONSIDER_TABLE_INDEX_TO_PUSHDOWN}",
         DataSourceManager.TRUE)
       .toBoolean
   }

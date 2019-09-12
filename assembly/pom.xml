@@ -176,6 +176,11 @@
           <artifactId>spark-xsql-shell_${scala.binary.version}</artifactId>
           <version>${project.version}</version>
         </dependency>
+        <dependency>
+          <groupId>org.apache.spark</groupId>
+          <artifactId>spark-xsql-jdbc_${scala.binary.version}</artifactId>
+          <version>${project.version}</version>
+        </dependency>
       </dependencies>
     </profile>
     <profile>

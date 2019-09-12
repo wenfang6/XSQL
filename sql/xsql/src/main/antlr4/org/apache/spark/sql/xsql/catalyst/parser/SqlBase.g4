@@ -99,9 +99,9 @@ statement
     | ALTER TABLE tableIdentifier
         ADD COLUMNS '(' columns=colTypeList ')'                        #addTableColumns
     | ALTER TABLE tableIdentifier
-        ADD COLUMN? '('? columns=colTypeList ')'?                      #addTableColumnsForMysql
+        ADD COLUMN? '('? columns=colTypeList ')'?                      #addTableColumnsForJDBC
     | ALTER TABLE tableIdentifier
-        DROP COLUMN? identifier (',' DROP COLUMN? identifier)*         #dropTableColumnsForMysql
+        DROP COLUMN? identifier (',' DROP COLUMN? identifier)*         #dropTableColumnsForJDBC
     | ALTER (TABLE | VIEW) from=tableIdentifier
         RENAME TO to=tableIdentifier                                   #renameTable
     | RENAME (TABLE | VIEW) from=tableIdentifier TO to=tableIdentifier #renameTable

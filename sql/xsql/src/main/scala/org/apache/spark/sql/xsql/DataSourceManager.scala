@@ -991,6 +991,13 @@ object DataSourceManager {
   val STREAMING_WATER_MARK = "watermark"
   val KAFKA_WATER_MARK = "timestamp"
 
+  val CONSIDER_TABLE_ROWS_TO_PUSHDOWN = "considerRows"
+  val CONSIDER_TABLE_INDEX_TO_PUSHDOWN = "considerIndex"
+  val DEFAULT_PUSHDOWN_SINGLE_TABLE_ROWS = 10000000
+  val DEFAULT_PUSHDOWN_MULTI_TABLE_ROWS = 5000000
+  val TABLEROWS = "tableRows"
+  val TABLEINDEX = "tableIndex"
+
   private val nextDatabaseId = new AtomicInteger(0)
 
   def newDatabaseId(): Int = nextDatabaseId.getAndIncrement()
