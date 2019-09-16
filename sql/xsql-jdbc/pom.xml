@@ -116,6 +116,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
+                            <includeArtifactIds>ojdbc6</includeArtifactIds>
                             <excludeArtifactIds>unused</excludeArtifactIds>
                             <includeScope>runtime</includeScope>
                             <outputDirectory>${jars.target.dir}</outputDirectory>
