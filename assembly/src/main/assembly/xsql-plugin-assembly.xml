@@ -26,6 +26,10 @@
       <directory>../sql/xsql/target/scala-2.11/jars</directory>
       <outputDirectory>xsql-jars</outputDirectory>
     </fileSet>
+    <fileSet>
+      <directory>../sql/xsql-jdbc/target/scala-2.11/jars</directory>
+      <outputDirectory>xsql-jars</outputDirectory>
+    </fileSet>
   </fileSets>
   <files>
     <file>
